@@ -21,11 +21,23 @@ public class SecurityConfig {
 
         http
             .csrf(csrf -> csrf.disable())
+
             .authorizeHttpRequests(auth -> auth
+                // ✅ Public APIs
                 .requestMatchers("/api/auth/**").permitAll()
+
+                // 🔥 ROLE BASED ACCESS
+                .requestMatchers("/api/educator/**").hasAuthority("EDUCATOR")
+                .requestMatchers("/api/student/**").hasAuthority("STUDENT")
+
+                // ✅ All other requests require login
                 .anyRequest().authenticated()
             )
+
+            // 🔐 JWT Filter
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+
+            // ❌ Disable default login
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable());
 
