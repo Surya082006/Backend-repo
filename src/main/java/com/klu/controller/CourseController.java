@@ -16,37 +16,39 @@ public class CourseController {
     @Autowired
     private CourseService service;
 
-    // 👨‍🏫 EDUCATOR → Create Course
-    @PostMapping({"/educator/create", "/educator/courses"})
+    // 👨‍🏫 CREATE COURSE
+    @PostMapping("/educator/courses")
     public Course create(@RequestBody Course course, Authentication auth) {
         return service.createCourse(course, auth.getName());
     }
 
-    // 👨‍🏫 EDUCATOR → Update Course
+    // 👨‍🏫 UPDATE COURSE
     @PutMapping("/educator/courses/{courseId}")
-    public Course update(@PathVariable Long courseId, @RequestBody Course course, Authentication auth) {
+    public Course update(@PathVariable Long courseId,
+                         @RequestBody Course course,
+                         Authentication auth) {
         return service.updateCourse(courseId, course, auth.getName());
     }
 
-    // 👨‍🏫 EDUCATOR → View My Created Courses
+    // 👨‍🏫 GET EDUCATOR COURSES
     @GetMapping("/educator/courses")
     public List<Course> educatorCourses(Authentication auth) {
         return service.getEducatorCourses(auth.getName());
     }
 
-    // 👨‍🎓 STUDENT → Get All Courses
+    // 👨‍🎓 GET ALL COURSES
     @GetMapping("/student/courses")
     public List<Course> getAll() {
         return service.getAllCourses();
     }
 
-    // 👨‍🎓 STUDENT → Get Course Details
+    // 👨‍🎓 GET COURSE BY ID
     @GetMapping("/student/courses/{courseId}")
     public Course getOne(@PathVariable Long courseId) {
         return service.getCourseById(courseId);
     }
 
-    // 🔥 NEW → My Courses (IMPORTANT)
+    // 👨‍🎓 MY ENROLLED COURSES
     @GetMapping("/student/my-courses")
     public List<Course> myCourses(Authentication auth) {
         return service.getMyCourseDetails(auth.getName());

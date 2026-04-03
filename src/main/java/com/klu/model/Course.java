@@ -15,9 +15,12 @@ public class Course {
 
     private String title;
     private String description;
-    private double price;
-    private String videoUrl;
-    private String fileUrl;
+    private Double price;
 
     private String educatorEmail;
+    private String videoUrl;
+    private String fileUrl;
+    private String imageUrl;
+    private String category;
+    private String duration;
 }

@@ -24,7 +24,7 @@ public class AssignmentService {
         return assignmentRepo.save(assignment);
     }
 
-    // 👨‍🎓 View assignments
+    // 👨‍🎓 View assignments by course
     public List<Assignment> getAssignments(Long courseId) {
         return assignmentRepo.findByCourseId(courseId);
     }
@@ -34,8 +34,19 @@ public class AssignmentService {
         return submissionRepo.save(submission);
     }
 
-    // 👨‍🏫 View submissions
+    // 👨‍🏫 View submissions for assignment
     public List<Submission> getSubmissions(Long assignmentId) {
         return submissionRepo.findByAssignmentId(assignmentId);
+    }
+
+    // 🔥 NEW → Grade submission (IMPORTANT)
+    public Submission gradeSubmission(Long id, Integer grade) {
+
+        Submission sub = submissionRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Submission not found"));
+
+        sub.setGrade(grade);
+
+        return submissionRepo.save(sub);
     }
 }

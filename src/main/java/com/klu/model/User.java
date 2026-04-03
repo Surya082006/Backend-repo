@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "users") // 🔥 IMPORTANT: fixes duplicate table issue
+@Table(name = "users") // 🔥 prevents table conflicts
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,4 +25,12 @@ public class User {
 
     @Column(nullable = false)
     private String role; // STUDENT / EDUCATOR
+
+ 
+
+    private String phone;
+
+    private String qualification;
+
+    private String department;
 }

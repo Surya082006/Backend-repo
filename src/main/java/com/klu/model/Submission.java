@@ -16,4 +16,5 @@ public class Submission {
     private Long assignmentId;
     private String studentEmail;
     private String fileUrl;
+    private Integer grade; 
 }

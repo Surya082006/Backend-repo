@@ -24,22 +24,29 @@ public class AssignmentController {
         return service.createAssignment(assignment);
     }
 
-    // 👨‍🎓 View assignments
+    
     @GetMapping("/student/assignments/{courseId}")
     public List<Assignment> getAssignments(@PathVariable Long courseId) {
         return service.getAssignments(courseId);
     }
 
-    // 👨‍🎓 Submit assignment
+    
     @PostMapping("/student/submit")
     public Submission submit(@RequestBody Submission submission, Authentication auth) {
         submission.setStudentEmail(auth.getName());
         return service.submit(submission);
     }
 
-    // 👨‍🏫 View submissions
     @GetMapping("/educator/submissions/{assignmentId}")
     public List<Submission> getSubmissions(@PathVariable Long assignmentId) {
         return service.getSubmissions(assignmentId);
+    }
+
+    @PutMapping("/educator/submission/{id}/grade")
+    public Submission grade(
+            @PathVariable Long id,
+            @RequestParam Integer grade) {
+
+        return service.gradeSubmission(id, grade);
     }
 }

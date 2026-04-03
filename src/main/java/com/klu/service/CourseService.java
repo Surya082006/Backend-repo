@@ -18,7 +18,7 @@ public class CourseService {
     private CourseRepository repo;
 
     @Autowired
-    private EnrollmentRepository enrollmentRepo; // 🔥 ADD THIS
+    private EnrollmentRepository enrollmentRepo;
 
     // 👨‍🏫 Create Course
     public Course createCourse(Course course, String educatorEmail) {
@@ -45,21 +45,24 @@ public class CourseService {
         return repo.findAll();
     }
 
+    // 👨‍🎓 Get Course By ID
     public Course getCourseById(Long courseId) {
         return repo.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
     }
 
+    // 👨‍🏫 Get Educator Courses
     public List<Course> getEducatorCourses(String educatorEmail) {
         return repo.findAll().stream()
                 .filter(course -> Objects.equals(course.getEducatorEmail(), educatorEmail))
                 .toList();
     }
 
-    // 🔥 NEW → Get My Courses (IMPORTANT)
+    // 🔥 FIXED → Get My Courses (Student)
     public List<Course> getMyCourseDetails(String email) {
 
-        List<Enrollment> enrollments = enrollmentRepo.findByStudentEmail(email);
+        // ✅ FIXED HERE
+        List<Enrollment> enrollments = enrollmentRepo.findByUserEmail(email);
 
         return enrollments.stream()
                 .map(e -> repo.findById(e.getCourseId()).orElse(null))
@@ -67,12 +70,14 @@ public class CourseService {
                 .toList();
     }
 
+    // 📁 Update Course File
     public Course updateCourseFile(Long courseId, String fileUrl, String educatorEmail) {
         Course course = getOwnedCourse(courseId, educatorEmail);
         course.setFileUrl(fileUrl);
         return repo.save(course);
     }
 
+    // 🔒 Check ownership
     private Course getOwnedCourse(Long courseId, String educatorEmail) {
         Course course = getCourseById(courseId);
 

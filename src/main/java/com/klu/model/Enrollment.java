@@ -13,6 +13,8 @@ public class Enrollment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String studentEmail;
+    private String userEmail; 
     private Long courseId;
+
+    private Integer progress = 0;
 }
