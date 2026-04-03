@@ -27,6 +27,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/**").permitAll()
 
                 // 🔥 ROLE BASED ACCESS
+                .requestMatchers("/api/file/upload/course/**").hasAuthority("EDUCATOR")
                 .requestMatchers("/api/educator/**").hasAuthority("EDUCATOR")
                 .requestMatchers("/api/student/**").hasAuthority("STUDENT")
 

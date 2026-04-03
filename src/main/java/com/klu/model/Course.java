@@ -16,6 +16,8 @@ public class Course {
     private String title;
     private String description;
     private double price;
+    private String videoUrl;
+    private String fileUrl;
 
     private String educatorEmail;
 }

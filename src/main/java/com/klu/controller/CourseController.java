@@ -17,15 +17,33 @@ public class CourseController {
     private CourseService service;
 
     // 👨‍🏫 EDUCATOR → Create Course
-    @PostMapping("/educator/create")
-    public Course create(@RequestBody Course course) {
-        return service.createCourse(course);
+    @PostMapping({"/educator/create", "/educator/courses"})
+    public Course create(@RequestBody Course course, Authentication auth) {
+        return service.createCourse(course, auth.getName());
+    }
+
+    // 👨‍🏫 EDUCATOR → Update Course
+    @PutMapping("/educator/courses/{courseId}")
+    public Course update(@PathVariable Long courseId, @RequestBody Course course, Authentication auth) {
+        return service.updateCourse(courseId, course, auth.getName());
+    }
+
+    // 👨‍🏫 EDUCATOR → View My Created Courses
+    @GetMapping("/educator/courses")
+    public List<Course> educatorCourses(Authentication auth) {
+        return service.getEducatorCourses(auth.getName());
     }
 
     // 👨‍🎓 STUDENT → Get All Courses
     @GetMapping("/student/courses")
     public List<Course> getAll() {
         return service.getAllCourses();
+    }
+
+    // 👨‍🎓 STUDENT → Get Course Details
+    @GetMapping("/student/courses/{courseId}")
+    public Course getOne(@PathVariable Long courseId) {
+        return service.getCourseById(courseId);
     }
 
     // 🔥 NEW → My Courses (IMPORTANT)
