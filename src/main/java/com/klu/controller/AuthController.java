@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.klu.dto.AuthResponse;
+import com.klu.dto.RegisterRequest;
+import com.klu.dto.SendOtpRequest;
 import com.klu.model.User;
 import com.klu.service.AuthService;
 
@@ -17,11 +19,18 @@ public class AuthController {
     @Autowired
     private AuthService service;
 
+    // SEND OTP
+    @PostMapping("/send-otp")
+    public Map<String, String> sendOtp(@RequestBody SendOtpRequest request) {
+        service.sendOtp(request.getEmail());
+        return Map.of("message", "OTP sent successfully to " + request.getEmail());
+    }
+
     // REGISTER
     @PostMapping("/register")
-    public AuthResponse register(@RequestBody User user) {
+    public AuthResponse register(@RequestBody RegisterRequest request) {
 
-        User savedUser = service.register(user);
+        User savedUser = service.register(request.getUser(), request.getOtp());
 
         return new AuthResponse(
                 savedUser.getUsername(),

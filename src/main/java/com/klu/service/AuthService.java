@@ -8,6 +8,10 @@ import com.klu.model.User;
 import com.klu.repository.UserRepository;
 import com.klu.security.JwtUtil;
 
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+
 @Service
 public class AuthService {
 
@@ -20,12 +24,36 @@ public class AuthService {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private EmailService emailService;
+
+    private final Map<String, String> otpStorage = new ConcurrentHashMap<>();
+
+    // SEND OTP
+    public void sendOtp(String email) {
+        repo.findByEmail(email).ifPresent(u -> {
+            throw new RuntimeException("Email already exists");
+        });
+
+        String otp = String.format("%06d", new Random().nextInt(999999));
+        otpStorage.put(email, otp);
+
+        emailService.sendEmail(email, "Your OTP for Registration", "Your OTP is: " + otp + "\nIt is valid for your current registration session.");
+    }
+
     // REGISTER
-    public User register(User user) {
+    public User register(User user, String otp) {
 
         repo.findByEmail(user.getEmail()).ifPresent(u -> {
             throw new RuntimeException("Email already exists");
         });
+
+        String storedOtp = otpStorage.get(user.getEmail());
+        if (storedOtp == null || !storedOtp.equals(otp)) {
+            throw new RuntimeException("Invalid or missing OTP");
+        }
+
+        otpStorage.remove(user.getEmail());
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 

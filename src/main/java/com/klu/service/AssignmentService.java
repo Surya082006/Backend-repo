@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.klu.model.Assignment;
+import com.klu.model.Enrollment;
 import com.klu.model.Submission;
 import com.klu.repository.AssignmentRepository;
+import com.klu.repository.CourseRepository;
+import com.klu.repository.EnrollmentRepository;
 import com.klu.repository.SubmissionRepository;
 
 @Service
@@ -19,9 +22,29 @@ public class AssignmentService {
     @Autowired
     private SubmissionRepository submissionRepo;
 
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private EnrollmentRepository enrollmentRepo;
+
+    @Autowired
+    private CourseRepository courseRepo;
+
     // 👨‍🏫 Create assignment
     public Assignment createAssignment(Assignment assignment) {
-        return assignmentRepo.save(assignment);
+        Assignment saved = assignmentRepo.save(assignment);
+
+        courseRepo.findById(assignment.getCourseId()).ifPresent(course -> {
+            List<Enrollment> enrollments = enrollmentRepo.findByCourseId(course.getId());
+            for (Enrollment e : enrollments) {
+                String subject = "New Assignment: " + assignment.getTitle() + " in " + course.getTitle();
+                String text = "Hello,\n\nA new assignment titled '" + assignment.getTitle() + "' has been posted in your course '" + course.getTitle() + "'.\n\nQuestion: " + assignment.getQuestion() + "\n\nPlease check your dashboard for details.";
+                emailService.sendEmail(e.getUserEmail(), subject, text);
+            }
+        });
+
+        return saved;
     }
 
     // 👨‍🎓 View assignments by course

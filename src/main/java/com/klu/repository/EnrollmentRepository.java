@@ -11,6 +11,9 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     // ✅ FIXED (correct field name)
     List<Enrollment> findByUserEmail(String userEmail);
 
+    // ✅ For finding all students in a course
+    List<Enrollment> findByCourseId(Long courseId);
+
     // ✅ For unenroll API
     void deleteByUserEmailAndCourseId(String userEmail, Long courseId);
 }
