@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.klu.model.User;
+import com.klu.model.*;
+import com.klu.dto.UserDTO;
 import com.klu.repository.UserRepository;
 import com.klu.security.JwtUtil;
+import com.klu.exception.UserAlreadyExistsException;
 
 import java.util.Map;
 import java.util.Random;
@@ -32,7 +34,7 @@ public class AuthService {
     // SEND OTP
     public void sendOtp(String email) {
         repo.findByEmail(email).ifPresent(u -> {
-            throw new RuntimeException("Email already exists");
+            throw new UserAlreadyExistsException("A user with this email already exists!");
         });
 
         String otp = String.format("%06d", new Random().nextInt(999999));
@@ -42,20 +44,37 @@ public class AuthService {
     }
 
     // REGISTER
-    public User register(User user, String otp) {
+    public User register(UserDTO dto, String otp) {
 
-        repo.findByEmail(user.getEmail()).ifPresent(u -> {
-            throw new RuntimeException("Email already exists");
+        repo.findByEmail(dto.getEmail()).ifPresent(u -> {
+            throw new UserAlreadyExistsException("A user with this email already exists!");
         });
 
-        String storedOtp = otpStorage.get(user.getEmail());
+        String storedOtp = otpStorage.get(dto.getEmail());
         if (storedOtp == null || !storedOtp.equals(otp)) {
             throw new RuntimeException("Invalid or missing OTP");
         }
 
-        otpStorage.remove(user.getEmail());
+        otpStorage.remove(dto.getEmail());
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        User user;
+        if ("EDUCATOR".equalsIgnoreCase(dto.getRole())) {
+            Educator e = new Educator();
+            e.setQualification(dto.getQualification());
+            e.setSpecialization(dto.getSpecialization());
+            user = e;
+        } else {
+            Student s = new Student();
+            s.setDepartment(dto.getDepartment());
+            s.setYearSemester(dto.getYearSemester());
+            user = s;
+        }
+
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setRole(dto.getRole().toUpperCase());
+        user.setPhone(dto.getPhone());
 
         return repo.save(user);
     }

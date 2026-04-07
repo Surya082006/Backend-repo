@@ -16,4 +16,7 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
 
     // ✅ For unenroll API
     void deleteByUserEmailAndCourseId(String userEmail, Long courseId);
+
+    // ✅ For exact match checking 
+    java.util.Optional<Enrollment> findByUserEmailAndCourseId(String userEmail, Long courseId);
 }

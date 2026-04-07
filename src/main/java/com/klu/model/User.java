@@ -5,10 +5,11 @@ import lombok.*;
 
 @Entity
 @Table(name = "users") // 🔥 prevents table conflicts
+@Inheritance(strategy = InheritanceType.JOINED)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public abstract class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,11 +27,5 @@ public class User {
     @Column(nullable = false)
     private String role; // STUDENT / EDUCATOR
 
- 
-
     private String phone;
-
-    private String qualification;
-
-    private String department;
 }

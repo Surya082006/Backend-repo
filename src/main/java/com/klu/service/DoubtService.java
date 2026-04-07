@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 import com.klu.model.Doubt;
 import com.klu.model.Reply;
 import com.klu.model.Notification;
+import com.klu.model.Enrollment;
 import com.klu.repository.DoubtRepository;
+import com.klu.repository.EnrollmentRepository;
 import com.klu.repository.ReplyRepository;
+import com.klu.exception.CourseCompletedException;
 
 @Service
 public class DoubtService {
@@ -23,8 +26,18 @@ public class DoubtService {
     @Autowired
     private NotificationService notificationService;
 
+    @Autowired
+    private EnrollmentRepository enrollmentRepo;
+
     // 👨‍🎓 Student asks doubt
     public Doubt askDoubt(Doubt doubt) {
+        // 🔥 Exception Handling: Reject if after deadline (progress >= 100)
+        Enrollment enrollment = enrollmentRepo.findByUserEmailAndCourseId(doubt.getStudentEmail(), doubt.getCourseId()).orElse(null);
+        
+        if (enrollment != null && enrollment.getProgress() >= 100) {
+            throw new CourseCompletedException("Your course is completed if you have a doubt please contact educator from a mail for response");
+        }
+
         return doubtRepo.save(doubt);
     }
 

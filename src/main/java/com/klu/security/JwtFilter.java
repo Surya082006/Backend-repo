@@ -45,7 +45,11 @@ public class JwtFilter extends GenericFilter {
                 SecurityContextHolder.getContext().setAuthentication(auth);
 
             } catch (Exception e) {
-                throw new RuntimeException("Invalid Token");
+                HttpServletResponse res = (HttpServletResponse) response;
+                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                res.setContentType("application/json");
+                res.getWriter().write("{\"error\": \"Invalid or expired token\"}");
+                return;
             }
         }
 

@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import com.klu.model.User;
+import com.klu.dto.UserDTO;
 import com.klu.service.UserService;
 
 @RestController
@@ -22,7 +23,7 @@ public class UserController {
 
     // ✏️ Update profile
     @PutMapping("/user/profile")
-    public User updateProfile(@RequestBody User user, Authentication auth) {
-        return userService.updateUser(auth.getName(), user);
+    public User updateProfile(@RequestBody UserDTO userDTO, Authentication auth) {
+        return userService.updateUser(auth.getName(), userDTO);
     }
 }

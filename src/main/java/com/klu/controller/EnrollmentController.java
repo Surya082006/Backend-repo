@@ -1,7 +1,7 @@
 package com.klu.controller;
 
 import java.util.List;
-
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +31,7 @@ public class EnrollmentController {
 
     // 👨‍🏫 Students list
     @GetMapping("/educator/students")
-    public List<Enrollment> students() {
-        return service.getAll();
+    public List<Map<String, Object>> students() {
+        return service.getPlatformStudents();
     }
 }
