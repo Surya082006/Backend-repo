@@ -24,10 +24,15 @@ public class AssignmentController {
         return service.createAssignment(assignment);
     }
 
+    @GetMapping("/educator/courses/{courseId}/assignments")
+    public List<Assignment> getEducatorAssignments(@PathVariable Long courseId, Authentication auth) {
+        return service.getEducatorAssignments(courseId, auth.getName());
+    }
+
     
     @GetMapping("/student/assignments/{courseId}")
-    public List<Assignment> getAssignments(@PathVariable Long courseId) {
-        return service.getAssignments(courseId);
+    public List<Assignment> getAssignments(@PathVariable Long courseId, Authentication auth) {
+        return service.getAssignments(courseId, auth.getName());
     }
 
     
@@ -38,8 +43,8 @@ public class AssignmentController {
     }
 
     @GetMapping("/educator/submissions/{assignmentId}")
-    public List<Submission> getSubmissions(@PathVariable Long assignmentId) {
-        return service.getSubmissions(assignmentId);
+    public List<Submission> getSubmissions(@PathVariable Long assignmentId, Authentication auth) {
+        return service.getSubmissions(assignmentId, auth.getName());
     }
 
     @PutMapping("/educator/submission/{id}/grade")

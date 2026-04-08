@@ -11,12 +11,15 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     // ✅ FIXED (correct field name)
     List<Enrollment> findByUserEmail(String userEmail);
 
+    List<Enrollment> findByUserEmailIgnoreCase(String userEmail);
+
     // ✅ For finding all students in a course
     List<Enrollment> findByCourseId(Long courseId);
 
-    // ✅ For unenroll API
-    void deleteByUserEmailAndCourseId(String userEmail, Long courseId);
-
     // ✅ For exact match checking 
     java.util.Optional<Enrollment> findByUserEmailAndCourseId(String userEmail, Long courseId);
+
+    java.util.Optional<Enrollment> findByUserEmailIgnoreCaseAndCourseId(String userEmail, Long courseId);
+
+    void deleteByCourseId(Long courseId);
 }

@@ -31,7 +31,24 @@ public class EnrollmentController {
 
     // 👨‍🏫 Students list
     @GetMapping("/educator/students")
-    public List<Map<String, Object>> students() {
-        return service.getPlatformStudents();
+    public List<Map<String, Object>> students(Authentication auth) {
+        return service.getEducatorStudents(auth.getName());
+    }
+
+    @GetMapping("/educator/students/all")
+    public List<Map<String, String>> allStudents() {
+        return service.getAllStudents();
+    }
+
+    @PostMapping("/educator/students/assign")
+    public Enrollment assignStudent(@RequestBody Map<String, String> request, Authentication auth) {
+        String studentEmail = request.get("studentEmail");
+        String courseId = request.get("courseId");
+
+        if (studentEmail == null || studentEmail.isBlank() || courseId == null || courseId.isBlank()) {
+            throw new RuntimeException("Student email and course are required");
+        }
+
+        return service.assignStudentToCourse(auth.getName(), studentEmail, Long.valueOf(courseId));
     }
 }

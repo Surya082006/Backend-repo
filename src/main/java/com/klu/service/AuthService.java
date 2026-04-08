@@ -45,6 +45,11 @@ public class AuthService {
 
     // REGISTER
     public User register(UserDTO dto, String otp) {
+        String requestedRole = dto.getRole() == null ? "" : dto.getRole().trim();
+
+        if (!"STUDENT".equalsIgnoreCase(requestedRole)) {
+            throw new RuntimeException("Public registration is only available for students.");
+        }
 
         repo.findByEmail(dto.getEmail()).ifPresent(u -> {
             throw new UserAlreadyExistsException("A user with this email already exists!");
@@ -57,23 +62,15 @@ public class AuthService {
 
         otpStorage.remove(dto.getEmail());
 
-        User user;
-        if ("EDUCATOR".equalsIgnoreCase(dto.getRole())) {
-            Educator e = new Educator();
-            e.setQualification(dto.getQualification());
-            e.setSpecialization(dto.getSpecialization());
-            user = e;
-        } else {
-            Student s = new Student();
-            s.setDepartment(dto.getDepartment());
-            s.setYearSemester(dto.getYearSemester());
-            user = s;
-        }
+        Student s = new Student();
+        s.setDepartment(dto.getDepartment());
+        s.setYearSemester(dto.getYearSemester());
+        User user = s;
 
         user.setUsername(dto.getUsername());
         user.setEmail(dto.getEmail());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        user.setRole(dto.getRole().toUpperCase());
+        user.setRole("STUDENT");
         user.setPhone(dto.getPhone());
 
         return repo.save(user);

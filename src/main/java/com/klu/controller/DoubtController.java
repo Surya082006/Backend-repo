@@ -26,14 +26,13 @@ public class DoubtController {
 
     // 👨‍🏫 View all doubts
     @GetMapping("/educator/doubts")
-    public List<Doubt> getAll() {
-        return service.getAllDoubts();
+    public List<Doubt> getAll(Authentication auth) {
+        return service.getAllDoubts(auth.getName());
     }
 
     // 👨‍🏫 Reply to doubt
     @PostMapping("/educator/reply")
     public Reply reply(@RequestBody Reply reply, Authentication auth) {
-        reply.setEducatorEmail(auth.getName());
-        return service.reply(reply);
+        return service.reply(reply, auth.getName());
     }
 }

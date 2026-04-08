@@ -30,10 +30,21 @@ public class CourseController {
         return service.updateCourse(courseId, course, auth.getName());
     }
 
+    @DeleteMapping("/educator/courses/{courseId}")
+    public String delete(@PathVariable Long courseId, Authentication auth) {
+        service.deleteCourse(courseId, auth.getName());
+        return "Course deleted successfully";
+    }
+
     // 👨‍🏫 GET EDUCATOR COURSES
     @GetMapping("/educator/courses")
     public List<Course> educatorCourses(Authentication auth) {
         return service.getEducatorCourses(auth.getName());
+    }
+
+    @GetMapping("/educator/courses/{courseId}")
+    public Course educatorCourse(@PathVariable Long courseId, Authentication auth) {
+        return service.getEducatorCourse(courseId, auth.getName());
     }
 
     // 👨‍🎓 GET ALL COURSES

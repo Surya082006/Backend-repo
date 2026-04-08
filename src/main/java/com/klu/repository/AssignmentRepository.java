@@ -7,4 +7,6 @@ import com.klu.model.Assignment;
 public interface AssignmentRepository extends JpaRepository<Assignment, Long> {
 
     List<Assignment> findByCourseId(Long courseId);
+
+    void deleteByCourseId(Long courseId);
 }
