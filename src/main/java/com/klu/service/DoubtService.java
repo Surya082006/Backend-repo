@@ -34,7 +34,7 @@ public class DoubtService {
     @Autowired
     private CourseRepository courseRepo;
 
-    // 👨‍🎓 Student asks doubt
+    
     public Doubt askDoubt(Doubt doubt) {
         Enrollment enrollment = enrollmentRepo.findByUserEmailIgnoreCaseAndCourseId(
                 doubt.getStudentEmail(),
@@ -48,7 +48,7 @@ public class DoubtService {
         return doubtRepo.save(doubt);
     }
 
-    // 👨‍🏫 Educator sees doubts
+    
     public List<Doubt> getAllDoubts(String educatorEmail) {
         List<Long> courseIds = courseRepo.findByEducatorEmailIgnoreCase(educatorEmail).stream()
                 .map(Course::getId)
@@ -61,7 +61,7 @@ public class DoubtService {
         return doubtRepo.findByCourseIdIn(courseIds);
     }
 
-    // 👨‍🏫 Educator replies
+  
     public Reply reply(Reply reply, String educatorEmail) {
         Doubt doubt = doubtRepo.findById(reply.getDoubtId())
                 .orElseThrow(() -> new RuntimeException("Doubt not found"));

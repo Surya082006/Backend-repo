@@ -10,15 +10,15 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    // 🔐 Secret Key (must be 32+ chars)
+    
     private final String SECRET = "mysecretkeymysecretkeymysecretkey";
 
-    // 🔑 Generate signing key
+   
     private Key getKey() {
         return Keys.hmacShaKeyFor(SECRET.getBytes());
     }
 
-    // 🚀 Generate JWT Token
+
     public String generateToken(String email, String role) {
         return Jwts.builder()
                 .setSubject(email)
@@ -29,7 +29,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    // 📧 Extract Email
+ 
     public String extractEmail(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getKey())
@@ -39,7 +39,7 @@ public class JwtUtil {
                 .getSubject();
     }
 
-    // 🔥 Extract Role (IMPORTANT FOR SECURITY)
+ 
     public String extractRole(String token) {
         return (String) Jwts.parserBuilder()
                 .setSigningKey(getKey())
@@ -49,7 +49,7 @@ public class JwtUtil {
                 .get("role");
     }
 
-    // ✅ Validate Token (optional but useful)
+    
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()

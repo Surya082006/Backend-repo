@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
-    @Autowired(required = false) // 🔥 IMPORTANT FIX
+    @Autowired(required = false) 
     private JavaMailSender mailSender;
 
     public void sendEmail(String to, String subject, String text) {
 
-        // 🔥 Check if mailSender exists
+        
         if (mailSender == null) {
             System.out.println("Email service not configured. Skipping email...");
             return;

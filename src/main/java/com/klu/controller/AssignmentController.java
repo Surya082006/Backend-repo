@@ -17,7 +17,7 @@ public class AssignmentController {
     @Autowired
     private AssignmentService service;
 
-    // 👨‍🏫 Create assignment
+    
     @PostMapping("/educator/assignment")
     public Assignment create(@RequestBody Assignment assignment, Authentication auth) {
         assignment.setEducatorEmail(auth.getName());

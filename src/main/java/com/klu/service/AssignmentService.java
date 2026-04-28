@@ -33,7 +33,7 @@ public class AssignmentService {
     @Autowired
     private CourseRepository courseRepo;
 
-    // 👨‍🏫 Create assignment
+   
     public Assignment createAssignment(Assignment assignment) {
         Course course = courseRepo.findById(assignment.getCourseId())
                 .orElseThrow(() -> new RuntimeException("Course not found"));
@@ -54,7 +54,7 @@ public class AssignmentService {
         return saved;
     }
 
-    // 👨‍🎓 View assignments by course
+    
     public List<Assignment> getAssignments(Long courseId, String studentEmail) {
         enrollmentRepo.findByUserEmailIgnoreCaseAndCourseId(studentEmail, courseId)
                 .orElseThrow(() -> new RuntimeException("Enroll in the course to access assignments"));
@@ -77,7 +77,7 @@ public class AssignmentService {
         return assignments;
     }
 
-    // 👨‍🎓 Submit assignment
+    
     public Submission submit(Submission submission) {
         Assignment assignment = assignmentRepo.findById(submission.getAssignmentId())
                 .orElseThrow(() -> new RuntimeException("Assignment not found"));
@@ -110,7 +110,7 @@ public class AssignmentService {
         return assignmentRepo.findByCourseId(courseId);
     }
 
-    // 👨‍🏫 View submissions for assignment
+    
     public List<Submission> getSubmissions(Long assignmentId, String educatorEmail) {
         Assignment assignment = assignmentRepo.findById(assignmentId)
                 .orElseThrow(() -> new RuntimeException("Assignment not found"));
@@ -125,7 +125,7 @@ public class AssignmentService {
         return submissionRepo.findByAssignmentId(assignmentId);
     }
 
-    // 🔥 NEW → Grade submission (IMPORTANT)
+    
     public Submission gradeSubmission(Long id, Integer grade) {
 
         Submission sub = submissionRepo.findById(id)

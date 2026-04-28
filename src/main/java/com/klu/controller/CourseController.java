@@ -16,13 +16,13 @@ public class CourseController {
     @Autowired
     private CourseService service;
 
-    // 👨‍🏫 CREATE COURSE
+    // CREATE COURSE
     @PostMapping("/educator/courses")
     public Course create(@RequestBody Course course, Authentication auth) {
         return service.createCourse(course, auth.getName());
     }
 
-    // 👨‍🏫 UPDATE COURSE
+    // UPDATE COURSE
     @PutMapping("/educator/courses/{courseId}")
     public Course update(@PathVariable Long courseId,
                          @RequestBody Course course,
@@ -36,7 +36,7 @@ public class CourseController {
         return "Course deleted successfully";
     }
 
-    // 👨‍🏫 GET EDUCATOR COURSES
+    //  GET EDUCATOR COURSES
     @GetMapping("/educator/courses")
     public List<Course> educatorCourses(Authentication auth) {
         return service.getEducatorCourses(auth.getName());
@@ -47,19 +47,19 @@ public class CourseController {
         return service.getEducatorCourse(courseId, auth.getName());
     }
 
-    // 👨‍🎓 GET ALL COURSES
+    // GET ALL COURSES
     @GetMapping("/student/courses")
     public List<Course> getAll() {
         return service.getAllCourses();
     }
 
-    // 👨‍🎓 GET COURSE BY ID
+    //  GET COURSE BY ID
     @GetMapping("/student/courses/{courseId}")
     public Course getOne(@PathVariable Long courseId) {
         return service.getCourseById(courseId);
     }
 
-    // 👨‍🎓 MY ENROLLED COURSES
+    
     @GetMapping("/student/my-courses")
     public List<Course> myCourses(Authentication auth) {
         return service.getMyCourseDetails(auth.getName());

@@ -12,48 +12,48 @@ import com.klu.security.JwtFilter;
 @Configuration
 public class SecurityConfig {
 
-    // 🔐 Password Encoder
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // 🔥 MAIN SECURITY CONFIG
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter) throws Exception {
 
         http
-            // 🔥 ENABLE CORS (VERY IMPORTANT)
+          
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
-            // ❌ Disable CSRF
+           
             .csrf(csrf -> csrf.disable())
 
-            // 🔐 Authorization Rules
+         
             .authorizeHttpRequests(auth -> auth
-                // ✅ Public APIs
+                
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/file/download/**").permitAll()
 
-                // 🔥 ROLE BASED ACCESS
+               
                 .requestMatchers("/api/file/upload/course/**").hasAuthority("EDUCATOR")
                 .requestMatchers("/api/educator/**").hasAuthority("EDUCATOR")
                 .requestMatchers("/api/student/**").hasAuthority("STUDENT")
+                .requestMatchers("/api/superadmin/**").hasAuthority("SUPERADMIN")
 
-                // ✅ All other requests require login
+                
                 .anyRequest().authenticated()
             )
 
-            // 🔐 JWT Filter
+           
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 
-            // ❌ Disable default login
+          
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable());
 
         return http.build();
     }
 
-    // 🔥🔥🔥 CORS CONFIGURATION (THIS FIXES YOUR ERROR)
+   
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
@@ -61,15 +61,15 @@ public class SecurityConfig {
 
         configuration.setAllowCredentials(true);
 
-        // ✅ Allow your frontend
+       
         configuration.addAllowedOrigin("http://localhost:5173");
-        configuration.addAllowedOrigin("http://localhost:5174"); // ✅ ADD THIS
-        configuration.addAllowedOriginPattern("*"); // ✅ BEST FOR DEV
+        configuration.addAllowedOrigin("http://localhost:5174");
+        configuration.addAllowedOriginPattern("*"); 
 
-        // ✅ Allow all headers
+       
         configuration.addAllowedHeader("*");
 
-        // ✅ Allow all methods (GET, POST, PUT, DELETE)
+        
         configuration.addAllowedMethod("*");
 
         UrlBasedCorsConfigurationSource source =

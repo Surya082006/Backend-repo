@@ -17,20 +17,20 @@ public class DoubtController {
     @Autowired
     private DoubtService service;
 
-    // 👨‍🎓 Ask doubt
+    //  Ask doubt
     @PostMapping("/student/doubt")
     public Doubt ask(@RequestBody Doubt doubt, Authentication auth) {
         doubt.setStudentEmail(auth.getName());
         return service.askDoubt(doubt);
     }
 
-    // 👨‍🏫 View all doubts
+    // View all doubts
     @GetMapping("/educator/doubts")
     public List<Doubt> getAll(Authentication auth) {
         return service.getAllDoubts(auth.getName());
     }
 
-    // 👨‍🏫 Reply to doubt
+    //  Reply to doubt
     @PostMapping("/educator/reply")
     public Reply reply(@RequestBody Reply reply, Authentication auth) {
         return service.reply(reply, auth.getName());

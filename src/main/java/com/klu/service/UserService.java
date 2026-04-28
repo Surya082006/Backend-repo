@@ -15,13 +15,13 @@ public class UserService {
     @Autowired
     private UserRepository userRepo;
 
-    // 🔍 Get user by email
+   
     public User getUser(String email) {
         return userRepo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    // ✏️ Update user profile
+   
     public User updateUser(String email, UserDTO updatedDTO) {
 
         User user = userRepo.findByEmail(email)

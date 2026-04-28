@@ -27,6 +27,17 @@ public abstract class User {
 
     private String phone;
 
+    @Column(nullable = false)
+    private boolean isApproved = true;
+
+    public boolean isApproved() {
+        return isApproved;
+    }
+
+    public void setApproved(boolean isApproved) {
+        this.isApproved = isApproved;
+    }
+
     public User() {
     }
 

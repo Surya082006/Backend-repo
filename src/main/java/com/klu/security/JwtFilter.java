@@ -32,9 +32,7 @@ public class JwtFilter extends GenericFilter {
 
             try {
                 String email = jwtUtil.extractEmail(token);
-                String role = jwtUtil.extractRole(token); // 🔥 IMPORTANT
-
-                // ✅ Set ROLE properly
+                String role = jwtUtil.extractRole(token); 
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(
                                 email,

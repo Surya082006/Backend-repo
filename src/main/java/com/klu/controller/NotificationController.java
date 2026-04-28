@@ -16,13 +16,13 @@ public class NotificationController {
     @Autowired
     private NotificationService service;
 
-    // 🔔 Get notifications for logged-in student
+    // Get notifications for logged-in student
     @GetMapping("/student/notifications")
     public List<Notification> getMyNotifications(Authentication auth) {
         return service.getUserNotifications(auth.getName());
     }
 
-    // (Optional) create notification manually
+    //  create notification manually
     @PostMapping("/notification")
     public Notification create(@RequestBody Notification notification) {
         return service.create(notification);

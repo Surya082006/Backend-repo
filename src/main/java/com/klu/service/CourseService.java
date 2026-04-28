@@ -41,7 +41,7 @@ public class CourseService {
     @Autowired
     private ReplyRepository replyRepo;
 
-    // 👨‍🏫 Create Course
+    
     public Course createCourse(Course course, String educatorEmail) {
         course.setId(null);
         course.setEducatorEmail(educatorEmail);

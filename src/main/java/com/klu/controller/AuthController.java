@@ -50,4 +50,11 @@ public class AuthController {
 
         return Map.of("token", token);
     }
+
+    // GOOGLE LOGIN
+    @PostMapping("/google-login")
+    public Map<String, Object> googleLogin(@RequestBody com.klu.dto.GoogleLoginRequest request) {
+        String clientId = "704973701323-cbjt0m8bt5oqnmfv1mbf2t3n3hphesh3.apps.googleusercontent.com";
+        return service.googleLogin(request.getCredential(), clientId);
+    }
 }

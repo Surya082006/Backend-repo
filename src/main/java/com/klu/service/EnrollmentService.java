@@ -33,7 +33,7 @@ public class EnrollmentService {
     @Autowired
     private UserRepository userRepo;
 
-    // 👨‍🎓 Enroll student
+   
     public Enrollment enroll(String email, Long courseId) {
         String normalizedEmail = normalizeEmail(email);
         Course course = courseRepo.findById(courseId)
@@ -77,7 +77,7 @@ public class EnrollmentService {
         return enroll(normalizedStudentEmail, courseId);
     }
 
-    // ❌ Unenroll
+    
     @Transactional
     public void unenroll(String email, Long courseId) {
         String normalizedEmail = normalizeEmail(email);
@@ -88,17 +88,17 @@ public class EnrollmentService {
         repo.delete(enrollment);
     }
 
-    // 📚 Get student courses
+    
     public List<Enrollment> getByUser(String email) {
         return repo.findByUserEmailIgnoreCase(email);
     }
 
-    // 👨‍🏫 Get all students (simple raw)
+    
     public List<Enrollment> getAll() {
         return repo.findAll();
     }
 
-    // 🌟 Get comprehensive Platform Students
+    
     public List<Map<String, Object>> getEducatorStudents(String educatorEmail) {
         List<Course> courses = courseRepo.findByEducatorEmailIgnoreCase(educatorEmail);
         Set<Long> ownedCourseIds = new HashSet<>(courses.stream().map(Course::getId).toList());
@@ -118,7 +118,7 @@ public class EnrollmentService {
         for (User student : students) {
             boolean isEnrolled = false;
             for (Enrollment e : enrollments) {
-                if (e.getUserEmail().equals(student.getEmail())) {
+                if (e.getUserEmail().equalsIgnoreCase(student.getEmail())) {
                     isEnrolled = true;
                     Course c = courseById.get(e.getCourseId());
 

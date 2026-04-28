@@ -16,20 +16,20 @@ public class EnrollmentController {
     @Autowired
     private EnrollmentService service;
 
-    // ✅ Enroll
+    //Enroll
     @PostMapping("/student/enroll/{courseId}")
     public Enrollment enroll(@PathVariable Long courseId, Authentication auth) {
         return service.enroll(auth.getName(), courseId);
     }
 
-    // ❌ Unenroll
+    //Unenroll
     @DeleteMapping("/student/enroll/{courseId}")
     public String unenroll(@PathVariable Long courseId, Authentication auth) {
         service.unenroll(auth.getName(), courseId);
         return "Unenrolled";
     }
 
-    // 👨‍🏫 Students list
+    //  Students list
     @GetMapping("/educator/students")
     public List<Map<String, Object>> students(Authentication auth) {
         return service.getEducatorStudents(auth.getName());
