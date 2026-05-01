@@ -29,17 +29,7 @@ public class SecurityConfig {
 
          
             .authorizeHttpRequests(auth -> auth
-                
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/file/download/**").permitAll()
-
-               
-                .requestMatchers("/api/file/upload/course/**").hasAuthority("EDUCATOR")
-                .requestMatchers("/api/educator/**").hasAuthority("EDUCATOR")
-                .requestMatchers("/api/student/**").hasAuthority("STUDENT")
-                .requestMatchers("/api/superadmin/**").hasAuthority("SUPERADMIN")
-
-                
+                .requestMatchers("/**").permitAll()  // allow all endpoints
                 .anyRequest().authenticated()
             )
 
